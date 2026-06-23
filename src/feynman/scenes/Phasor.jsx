@@ -64,41 +64,93 @@ export function PhasorScene() {
   const endP = pts[endIdx] || pts[n];
   const resOp = clamp((t - 76.2) / 0.8, 0, 1);
   const eqOp = (s) => clamp((t - s) / 0.8, 0, 1);
-  const Eq = ({ tex, he, size = 20, s, gold }) => (
-    <div style={{ opacity: eqOp(s), transform: `translateY(${(1 - eqOp(s)) * 10}px)`, marginBottom: 20 }}>
-      <div style={{ direction: 'ltr' }}>
-        <Tex tex={tex} display size={size} color={gold ? GOLD : '#eef2f9'} />
-      </div>
-      <div style={{ fontFamily: HEB, fontSize: 14.5, color: 'rgba(244,246,251,0.6)', direction: 'rtl', marginTop: 5 }}>
-        {he}
-      </div>
-    </div>
-  );
+  // The four equations read as one connected derivation, linked by a glowing
+  // spine with a node per step and all aligned on a common right-hand axis.
+  const STEPS = [
+    { tex: '\\mathcal{M}_i = A_i\\,e^{\\,iS_i/\\hbar}', he: 'כל מסלול תורם "חץ" מרוכב — משרעת ופאזה', s: 77.0 },
+    { tex: '\\mathcal{M}=\\sum_i \\mathcal{M}_i', he: 'החצים מתחברים ראש־לזנב במישור המרוכב', s: 78.2 },
+    { tex: 'P\\;\\propto\\;|\\mathcal{M}|^{2}', he: 'ההסתברות = אורך הסכום בריבוע', s: 79.2, gold: true },
+    { tex: '\\langle f|i\\rangle=\\int\\!\\mathcal{D}\\phi\\;e^{\\,iS/\\hbar}', he: 'וזהו בדיוק אינטגרל המסלולים של פיינמן', s: 80.2 },
+  ];
+  const ROW = 80,
+    railRight = 12,
+    nodeY = 18;
+  const revealed = STEPS.filter((st) => t >= st.s).length;
   return (
     <div style={{ position: 'absolute', inset: 0, opacity: op }}>
-      {/* equations column (right, RTL reading) */}
-      <div style={{ position: 'absolute', right: 70, top: 150, width: 470, direction: 'rtl', textAlign: 'right' }}>
-        <Eq tex={'\\mathcal{M}_i = A_i\\,e^{\\,iS_i/\\hbar}'} he={'כל מסלול תורם "חץ" מרוכב — משרעת ופאזה'} s={77.0} />
-        <Eq tex={'\\mathcal{M}=\\sum_i \\mathcal{M}_i'} he={'החצים מתחברים ראש־לזנב במישור המרוכב'} s={78.2} />
-        <Eq tex={'P\\;\\propto\\;|\\mathcal{M}|^{2}'} he={'ההסתברות = אורך הסכום בריבוע'} s={79.2} gold />
-        <Eq tex={'\\langle f|i\\rangle=\\int\\!\\mathcal{D}\\phi\\;e^{\\,iS/\\hbar}'} he={'וזהו בדיוק אינטגרל המסלולים של פיינמן'} s={80.2} />
+      {/* equations — a connected vertical derivation rail (RTL) */}
+      <div style={{ position: 'absolute', right: 58, top: 142, width: 498, height: STEPS.length * ROW, direction: 'rtl' }}>
+        {revealed > 1 && (
+          <div
+            style={{
+              position: 'absolute',
+              right: railRight,
+              top: nodeY,
+              width: 2,
+              height: (revealed - 1) * ROW,
+              background: 'linear-gradient(to bottom, rgba(242,193,78,0.55), rgba(207,227,255,0.28))',
+              borderRadius: 2,
+            }}
+          />
+        )}
+        {STEPS.map((st, i) => {
+          const o = eqOp(st.s);
+          if (o <= 0) return null;
+          const accent = st.gold ? GOLD : 'rgba(207,227,255,0.92)';
+          return (
+            <div
+              key={i}
+              style={{ position: 'absolute', top: i * ROW, right: 0, left: 0, opacity: o, transform: `translateY(${(1 - o) * 8}px)` }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  right: railRight - 4.5,
+                  top: nodeY - 5.5,
+                  width: 11,
+                  height: 11,
+                  borderRadius: '50%',
+                  background: accent,
+                  boxShadow: `0 0 12px 2px ${st.gold ? 'rgba(242,193,78,0.75)' : 'rgba(207,227,255,0.5)'}`,
+                }}
+              />
+              <div style={{ position: 'absolute', right: railRight + 24, left: 0 }}>
+                <div style={{ direction: 'ltr', textAlign: 'right' }}>
+                  <Tex
+                    className="fy-eq-right"
+                    tex={st.tex}
+                    display
+                    size={st.gold ? 23 : 20}
+                    color={st.gold ? GOLD : '#eef2f9'}
+                    style={{ display: 'block', textAlign: 'right' }}
+                  />
+                </div>
+                <div style={{ direction: 'rtl', textAlign: 'right', fontFamily: HEB, fontSize: 14, color: 'rgba(244,246,251,0.62)', marginTop: 2 }}>
+                  {st.he}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
       {/* complex-plane axes */}
       <svg width="1280" height="720" style={{ position: 'absolute', inset: 0, overflow: 'visible' }}>
         <line x1={O.x - 60} y1={O.y} x2={O.x + 200} y2={O.y} stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
         <line x1={O.x} y1={O.y + 70} x2={O.x} y2={O.y - 280} stroke="rgba(255,255,255,0.16)" strokeWidth="1" />
-        {arrows}
+        <g style={{ filter: 'drop-shadow(0 0 3px rgba(120,170,255,0.55))' }}>{arrows}</g>
         {resOp > 0 && (
-          <PArrow
-            x1={O.x}
-            y1={O.y}
-            x2={fyLerp(O.x, endP.x, resOp)}
-            y2={fyLerp(O.y, endP.y, resOp)}
-            color={GOLD}
-            w={4}
-            head={13}
-            op={1}
-          />
+          <g style={{ filter: 'drop-shadow(0 0 7px rgba(242,193,78,0.85))' }}>
+            <PArrow
+              x1={O.x}
+              y1={O.y}
+              x2={fyLerp(O.x, endP.x, resOp)}
+              y2={fyLerp(O.y, endP.y, resOp)}
+              color={GOLD}
+              w={4}
+              head={13}
+              op={1}
+            />
+          </g>
         )}
       </svg>
       <div style={{ position: 'absolute', left: O.x - 78, top: O.y + 10, fontFamily: MON, fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>

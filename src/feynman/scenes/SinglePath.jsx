@@ -64,8 +64,11 @@ function EqCard({ children, x, y, w, op = 1, align = 'right' }) {
         width: w,
         opacity: op,
         padding: '14px 18px',
-        background: 'rgba(12,16,24,0.82)',
+        // RTL leading edge (right) carries a gold accent so the equation cards
+        // read as one related set.
+        background: 'linear-gradient(180deg, rgba(16,21,31,0.86), rgba(10,13,20,0.86))',
         border: '1px solid rgba(255,255,255,0.1)',
+        borderRight: '3px solid rgba(242,193,78,0.55)',
         borderRadius: 12,
         boxShadow: '0 12px 34px rgba(0,0,0,0.4)',
         direction: 'rtl',
@@ -75,6 +78,20 @@ function EqCard({ children, x, y, w, op = 1, align = 'right' }) {
     >
       {children}
     </div>
+  );
+}
+
+// Connector linking the vertex rule to the amplitude it implies.
+function CardLink({ x, y, op }) {
+  return (
+    <svg
+      width="40"
+      height="46"
+      style={{ position: 'absolute', left: x, top: y, opacity: op, overflow: 'visible' }}
+    >
+      <line x1="20" y1="0" x2="20" y2="34" stroke="rgba(242,193,78,0.55)" strokeWidth="2" strokeDasharray="3 3" />
+      <path d="M 14 28 L 20 36 L 26 28" fill="none" stroke="rgba(242,193,78,0.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
 
@@ -134,6 +151,7 @@ export function SinglePathScene() {
           i = <span style={{ color: QCOL.red }}>r</span> &nbsp;→&nbsp; j = <span style={{ color: QCOL.green }}>g</span>
         </div>
       </EqCard>
+      <CardLink x={1076} y={584} op={mCardOp} />
       <EqCard x={946} y={622} w={300} op={mCardOp} align="center">
         <div style={{ direction: 'ltr' }}>
           <Tex tex={'\\mathcal{M}_1 \\;\\propto\\; g_s^{2}'} size={20} />

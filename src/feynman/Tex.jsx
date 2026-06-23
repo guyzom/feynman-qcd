@@ -20,13 +20,14 @@ function texHtml(tex, display) {
 
 // Renders a TeX string with KaTeX; falls back to a monospace literal if KaTeX
 // fails for any reason.
-export function Tex({ tex, display = false, size = 18, color = '#eef2f9', style = {} }) {
+export function Tex({ tex, display = false, size = 18, color = '#eef2f9', style = {}, className }) {
   const html = texHtml(tex, display);
   if (!html) {
-    return <span style={{ fontFamily: MON, fontSize: size * 0.9, color, ...style }}>{tex}</span>;
+    return <span className={className} style={{ fontFamily: MON, fontSize: size * 0.9, color, ...style }}>{tex}</span>;
   }
   return (
     <span
+      className={className}
       style={{ color, fontSize: size, lineHeight: 1.35, ...style }}
       dangerouslySetInnerHTML={{ __html: html }}
     />

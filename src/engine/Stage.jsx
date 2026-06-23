@@ -89,6 +89,16 @@ export function Stage({
     };
   }, [playing, duration, loop]);
 
+  // Dev-only hook so a headless screenshot harness can freeze an exact frame.
+  React.useEffect(() => {
+    if (import.meta.env && import.meta.env.DEV) {
+      window.__seek = (t) => {
+        setPlaying(false);
+        setTime(clamp(t, 0, duration));
+      };
+    }
+  }, [duration]);
+
   // Keyboard: space = play/pause, ← → = seek, 0/Home = reset
   React.useEffect(() => {
     const onKey = (e) => {

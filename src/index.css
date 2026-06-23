@@ -100,6 +100,16 @@ body {
   will-change: transform;
 }
 
+/* KaTeX display math is centred by default; let equation rails align it. */
+.fy-eq-right .katex-display {
+  text-align: right;
+  margin: 0.12em 0;
+}
+.fy-eq-left .katex-display {
+  text-align: left;
+  margin: 0.12em 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .fy-flow,
   .fy-coil-flow {
