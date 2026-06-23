@@ -1,0 +1,25 @@
+{
+  "name": "feynman-qcd",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Feynman QCD — a path-integral animation for the strong interaction (lecture edition).",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:standalone": "STANDALONE=1 vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/heebo": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "katex": "^0.16.9",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^5.4.11",
+    "vite-plugin-singlefile": "^2.3.3"
+  }
+}
