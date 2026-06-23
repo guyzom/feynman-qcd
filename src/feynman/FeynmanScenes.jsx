@@ -2,7 +2,7 @@ import React from 'react';
 import { Stage } from '../engine/Stage.jsx';
 import { Sprite } from '../engine/timeline.jsx';
 import { FY_DUR } from './constants.js';
-import { GridGlow, Vignette } from './FeynmanPath.jsx';
+import { GridGlow, Vignette, Aurora } from './FeynmanPath.jsx';
 import { Sections, NarrationBar } from './overlays.jsx';
 import { TitleScene } from './scenes/Title.jsx';
 import { SinglePathScene } from './scenes/SinglePath.jsx';
@@ -31,6 +31,7 @@ export default function FeynmanScenes() {
       persistKey="feynman-qcd"
       background="radial-gradient(120% 100% at 50% 0%, #141c2c 0%, #0a0e16 55%, #06090f 100%)"
     >
+      <Aurora />
       <GridGlow />
       <Sections />
       <Sprite start={0} end={5.4}>

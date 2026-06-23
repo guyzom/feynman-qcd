@@ -39,3 +39,78 @@ body {
     opacity: 0.8;
   }
 }
+
+/* ── Flowing energy along worldlines & gluons ────────────────────────────────
+   A short lit dash travels along each line via stroke-dashoffset — reads as
+   energy/charge propagating in the time direction. Pure CSS, so it stays
+   continuous and free regardless of the React playhead. */
+@keyframes fy-flow-x {
+  to {
+    stroke-dashoffset: -160;
+  }
+}
+@keyframes fy-flow-coil {
+  to {
+    stroke-dashoffset: -120;
+  }
+}
+.fy-flow {
+  animation: fy-flow-x 1.5s linear infinite;
+  will-change: stroke-dashoffset;
+}
+.fy-coil-flow {
+  animation: fy-flow-coil 1.9s linear infinite;
+  will-change: stroke-dashoffset;
+}
+
+/* ── Vertex emission/absorption flash ────────────────────────────────────────
+   A soft ring that breathes around each interaction vertex. */
+@keyframes fy-vertex-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.75);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.55);
+  }
+}
+.fy-vertex-pulse {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fy-vertex-pulse 2.1s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+/* ── Ambient aurora — slow drifting colour glow for depth ─────────────────── */
+@keyframes fy-aurora-drift {
+  0% {
+    transform: translate(-3%, -2%) scale(1);
+  }
+  50% {
+    transform: translate(4%, 3%) scale(1.15);
+  }
+  100% {
+    transform: translate(-3%, -2%) scale(1);
+  }
+}
+.fy-aurora {
+  animation: fy-aurora-drift 24s ease-in-out infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fy-flow,
+  .fy-coil-flow {
+    animation: none;
+    opacity: 0 !important;
+  }
+  .fy-vertex-pulse {
+    animation: none;
+    opacity: 0.4;
+  }
+  .fy-aurora {
+    animation: none;
+  }
+}
