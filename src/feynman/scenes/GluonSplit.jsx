@@ -53,6 +53,17 @@ export function GluonSplitScene() {
         >
           <Tex tex={'\\sim g_s\\,f^{abc}'} size={16} color={GOLD} />
         </div>
+        <div
+          style={{
+            fontFamily: HEB,
+            fontSize: 12.5,
+            color: 'rgba(244,246,251,0.6)',
+            direction: 'rtl',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          8 גלואונים · <span style={{ color: 'rgba(242,193,78,0.85)' }}>אוקטֶט של SU(3)</span>
+        </div>
       </div>
       {/* Lagrangian card */}
       <div

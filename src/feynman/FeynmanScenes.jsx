@@ -2,7 +2,7 @@ import React from 'react';
 import { Stage } from '../engine/Stage.jsx';
 import { Sprite } from '../engine/timeline.jsx';
 import { FY_DUR } from './constants.js';
-import { GridGlow } from './FeynmanPath.jsx';
+import { GridGlow, Vignette } from './FeynmanPath.jsx';
 import { Sections, NarrationBar } from './overlays.jsx';
 import { TitleScene } from './scenes/Title.jsx';
 import { SinglePathScene } from './scenes/SinglePath.jsx';
@@ -58,6 +58,7 @@ export default function FeynmanScenes() {
         <PhasorScene />
       </Sprite>
       <NarrationBar />
+      <Vignette />
     </Stage>
   );
 }

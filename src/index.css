@@ -14,3 +14,28 @@ body {
 * {
   box-sizing: border-box;
 }
+
+/* Ambient backdrop motion — compositor-only (opacity), zero per-frame JS.
+   The dot grid breathes slowly so the stage never feels frozen on a pause. */
+@keyframes fy-grid-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.fy-grid-breathe {
+  animation: fy-grid-breathe 9s ease-in-out infinite;
+  will-change: opacity;
+}
+
+/* Respect users who prefer reduced motion: hold the grid steady. */
+@media (prefers-reduced-motion: reduce) {
+  .fy-grid-breathe {
+    animation: none;
+    opacity: 0.8;
+  }
+}

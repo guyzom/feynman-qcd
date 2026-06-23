@@ -13,7 +13,7 @@ export function Sections() {
     return (
       <div
         key={i}
-        style={{ position: 'absolute', top: 32, left: 48, opacity: op, display: 'flex', alignItems: 'center', gap: 11 }}
+        style={{ position: 'absolute', top: 32, left: 48, opacity: op, display: 'flex', alignItems: 'center', gap: 11, zIndex: 7 }}
       >
         <span style={{ fontFamily: MON, fontSize: 13, color: GOLD, letterSpacing: '0.12em', fontWeight: 700 }}>
           {s.n}
@@ -69,6 +69,7 @@ export function NarrationBar() {
         direction: 'rtl',
         maxWidth: 1060,
         boxShadow: '0 10px 30px rgba(0,0,0,0.4)',
+        zIndex: 7,
       }}
     >
       <span style={{ fontFamily: HEB, fontSize: 24, fontWeight: 600, color: '#f4f6fb', whiteSpace: 'nowrap' }}>

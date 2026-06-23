@@ -69,6 +69,13 @@ export function fpColorAt(states, f) {
 
 // ── one Feynman quark worldline + gluon arches, revealed by `reveal` ──────────
 export function FeynmanPath({ w, h, states, gluons, reveal, showLabels = true, big = false }) {
+  // All geometry is a pure function of these inputs. The Stage re-renders every
+  // descendant on the 60fps playhead tick, but a path whose `reveal` (and shape)
+  // is unchanged — e.g. the finished panels in the grid/time-slice/climax scenes
+  // — would otherwise rebuild every SVG path string each frame for nothing.
+  // Memoize on a value key so those static instances pay the cost only once.
+  const memoKey = `${w}|${h}|${reveal}|${showLabels}|${big}|${JSON.stringify(states)}|${JSON.stringify(gluons)}`;
+  return React.useMemo(() => {
   const lineY = h * 0.58;
   const x0 = w * 0.07,
     xe = w * 0.93;
@@ -283,17 +290,42 @@ export function FeynmanPath({ w, h, states, gluons, reveal, showLabels = true, b
       {charge}
     </div>
   );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [memoKey]);
 }
 
 // ── faint dot grid backdrop ───────────────────────────────────────────────────
-export function GridGlow() {
-  const dots = [];
-  for (let x = 0; x <= 1280; x += 64)
-    for (let y = 0; y <= 720; y += 64)
-      dots.push(<circle key={x + '_' + y} cx={x} cy={y} r="1" fill="rgba(255,255,255,0.05)" />);
+// Static and time-independent: memoized so it never re-renders on the 60fps
+// playhead tick, and its (≈230-node) dot array is built only once. The slow
+// "breathe" comes from a compositor-only CSS opacity animation, not JS.
+export const GridGlow = React.memo(function GridGlow() {
+  const dots = React.useMemo(() => {
+    const out = [];
+    for (let x = 0; x <= 1280; x += 64)
+      for (let y = 0; y <= 720; y += 64)
+        out.push(<circle key={x + '_' + y} cx={x} cy={y} r="1" fill="rgba(255,255,255,0.05)" />);
+    return out;
+  }, []);
   return (
-    <svg width="1280" height="720" style={{ position: 'absolute', inset: 0 }}>
+    <svg width="1280" height="720" className="fy-grid-breathe" style={{ position: 'absolute', inset: 0 }}>
       {dots}
     </svg>
   );
-}
+});
+
+// ── cinematic edge vignette ───────────────────────────────────────────────────
+// Topmost, pointer-transparent layer that gently darkens only the outer ~40%,
+// adding depth without touching the central region where text/equations live.
+export const Vignette = React.memo(function Vignette() {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+        pointerEvents: 'none',
+        background: 'radial-gradient(135% 120% at 50% 44%, transparent 58%, rgba(2,4,8,0.5) 100%)',
+        zIndex: 5,
+      }}
+    />
+  );
+});
