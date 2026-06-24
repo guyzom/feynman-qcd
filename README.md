@@ -1,5 +1,7 @@
 # Feynman QCD — Path-Integral Animation
 
+[![Deploy to GitHub Pages](https://github.com/guyzom/feynman-qcd/actions/workflows/deploy.yml/badge.svg)](https://github.com/guyzom/feynman-qcd/actions/workflows/deploy.yml)
+
 **▶ Live demo: https://guyzom.github.io/feynman-qcd/**
 
 A lecture-edition animated explainer of the QCD path integral for the strong
