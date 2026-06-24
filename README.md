@@ -1,5 +1,7 @@
 # Feynman QCD — Path-Integral Animation
 
+**▶ Live demo: https://guyzom.github.io/feynman-qcd/**
+
 A lecture-edition animated explainer of the QCD path integral for the strong
 interaction: an 82-second, 16:9 (1280×720) dark-mode piece narrated in Hebrew
 (RTL) with English physics terms and real KaTeX equations. Implemented as a
@@ -22,6 +24,28 @@ fonts into one `index.html` you can open by double-clicking or hand to anyone.
 **Transport:** `space` = play/pause · `←`/`→` = seek (hold `shift` for 1s steps)
 · `0`/`Home` = reset · drag or click the scrub track to seek. The playhead is
 persisted in `localStorage`.
+
+## Deployment (GitHub Pages)
+
+The live demo at **https://guyzom.github.io/feynman-qcd/** is published
+automatically by GitHub Actions — there is nothing to deploy by hand.
+
+How it's wired up:
+
+1. **Workflow** — `.github/workflows/deploy.yml` runs on every push to `main`
+   (and can be triggered manually via *Actions → Deploy to GitHub Pages →
+   Run workflow*). It checks out the repo, runs `npm ci`, builds with
+   `npm run build -- --base=/feynman-qcd/`, then uploads `dist/` and publishes
+   it with the official `actions/deploy-pages` action.
+2. **`--base=/feynman-qcd/`** — the site is served from a sub-path (the repo
+   name), not the domain root, so Vite must emit asset URLs prefixed with
+   `/feynman-qcd/`. Local `npm run dev`/`preview` use the default `/` base.
+3. **Repo setting** — *Settings → Pages → Build and deployment → Source* is set
+   to **GitHub Actions** (not "Deploy from a branch").
+
+To ship a change: commit to `main` and push. The workflow rebuilds and the live
+URL updates within a minute or two — hard-refresh (Ctrl/Cmd+Shift+R) to bypass
+the browser cache.
 
 ## Structure
 
