@@ -1,0 +1,29 @@
+{
+  "name": "feynman-qcd",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Interactive QCD diagrams and amplitude interference with React and SVG.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:standalone": "vite build --mode standalone",
+    "preview": "vite preview",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "@fontsource/heebo": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
+    "katex": "0.19.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@vitejs/plugin-react": "6.1.2",
+    "vite": "8.3.3"
+  }
+}
